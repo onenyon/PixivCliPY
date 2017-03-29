@@ -43,6 +43,4 @@ class PixivClip:
 
 if __name__ == '__main__':
 	p = PixivClip('', '')
-	# p.begin()
-	o= p.refresh_local_pixiv_ids()
-	# print(o)
+	p.begin()
