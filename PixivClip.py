@@ -3,19 +3,16 @@ from lib import PixivUtils
 from queue import Queue
 
 class PixivClip:
-	def __init__(self, default_path=r'F:/PIXIV'):
-	# def __init__(self, _user, _pass):
+	def __init__(self, _user, _pass, default_path=r'F:/PIXIV'):
 		self.pastes = Queue() 
 		self.pixiv_utils = PixivUtils()
 		self.default_path = default_path
 
-		# self.refresh_local_pixiv_ids()
 		self.local_pixiv_ids = []
 
 	def refresh_local_pixiv_ids(self):
 		for i in self.pixiv_utils.list_imgs_pixiv_ids_in_dir(self.default_path):
 			self.local_pixiv_ids.append(i)
-
 
 	def callback(self, url):
 		illust_id = self.pixiv_utils.parse_url_for_id(url)
@@ -45,7 +42,7 @@ class PixivClip:
 		self.print_pastes_queue()
 
 if __name__ == '__main__':
-	p = PixivClip()
+	p = PixivClip('', '')
 	# p.begin()
 	o= p.refresh_local_pixiv_ids()
 	# print(o)
