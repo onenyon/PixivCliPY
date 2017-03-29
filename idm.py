@@ -1,19 +1,12 @@
-from comtypes.client import (GetModule, CreateObject)
-
-def get_idm_object():
-	try:
-		from comtypes.gen import IDManLib
-	except ImportError as e:
-		GetModule(('{ECF21EAB-3AA8-4355-82BE-F777990001DD}', 1, 0))
-		return self.load_idm_lib()		
-	except Exception as e:
-		print(e, type(e))
-	else:
-		return CreateObject('IDMan.CIDMLinkTransmitter', None, None, IDManLib.ICIDMLinkTransmitter2)
+try:
+	from comtypes.gen import IDManLib
+except ImportError as e:
+	GetModule(('{ECF21EAB-3AA8-4355-82BE-F777990001DD}', 1, 0))
+	from comtypes.gen import IDManLib
 
 class IDM:
 	def __init__(self, path=None):
-		self.idm = get_idm_object()
+		self.idm = CreateObject('IDMan.CIDMLinkTransmitter', None, None, IDManLib.ICIDMLinkTransmitter2)
 		self.path = path
 		self.flags = 2
 
