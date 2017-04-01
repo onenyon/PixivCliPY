@@ -23,18 +23,32 @@ class PixivClip:
 	def get_illust(self, illust_id):
 		if not self.api.access_token:
 			self.login()
-
 		try:
-			json_result = self.pixiv.works(illust_id)
+			json_result = self.api.works(illust_id)
+			json_result = json_result.response
+		except AttributeError:
+			raise AttributeError(json_result)
 		except utils.PixivError as e:
-			print(e, "Fuck")
-			raise e
-		else:
+			self.login()
+			print(e, self.api.access_token, json_result)
+			return self.get_illust(illust_id)
+		else:			
+			json_result = self.pixiv_utils.is_single_array(json_result)
 			return json_result
 
 	def work(self, illust_id):
-		illust = self.get_illust(illust_id)
+		try:
+			illust = self.get_illust(illust_id)
+		except AttributeError as json_result:
+			# print(json_result.has_error)
+			# print(json_result.status)
+			print(json_result)
+			print(dir(json_result))
+			return
+		else:
+			pass
 		illust_type = illust.type
+		print(illust)
 
 
 	def refresh_local_pixiv_ids(self):
