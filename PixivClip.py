@@ -40,7 +40,3 @@ class PixivClip:
 	def begin(self):
 		watcher = self.watch()
 		self.print_pastes_queue()
-
-if __name__ == '__main__':
-	p = PixivClip('', '')
-	p.begin()
