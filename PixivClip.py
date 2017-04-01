@@ -2,13 +2,40 @@ from ClipWatcher import ClipWatcher
 from lib import PixivUtils
 from queue import Queue
 
+from pixivpy3 import (PixivAPI, utils)
+from urllib.parse import (urlparse, parse_qs)
+
 class PixivClip:
 	def __init__(self, _user, _pass, default_path=r'F:/PIXIV'):
-		self.pastes = Queue() 
+		self._user, self._pass = (_user, _pass)
+
+		self.api = PixivAPI()
 		self.pixiv_utils = PixivUtils()
+
+		self.pastes = Queue() 
 		self.default_path = default_path
 
 		self.local_pixiv_ids = []
+
+	def login(self):
+		self.api.login(self._user, self._pass)
+
+	def get_illust(self, illust_id):
+		if not self.api.access_token:
+			self.login()
+
+		try:
+			json_result = self.pixiv.works(illust_id)
+		except utils.PixivError as e:
+			print(e, "Fuck")
+			raise e
+		else:
+			return json_result
+
+	def work(self, illust_id):
+		illust = self.get_illust(illust_id)
+		illust_type = illust.type
+
 
 	def refresh_local_pixiv_ids(self):
 		for i in self.pixiv_utils.list_imgs_pixiv_ids_in_dir(self.default_path):
